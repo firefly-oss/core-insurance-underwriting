@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>core-insurance-underwriting-core</artifactId>
+    <name>core-insurance-underwriting-core</name>
 
     <dependencies>
         <dependency>
