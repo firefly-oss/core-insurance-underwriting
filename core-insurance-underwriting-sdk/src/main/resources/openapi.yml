@@ -1,0 +1,3279 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:18080
+  description: Generated server url
+tags:
+- name: Statements of Value
+  description: One normalized statement-of-values line on a submission
+- name: Quotes
+  description: Quote prepared from authorized terms. Rating stays outside this service.
+- name: Loss Runs
+  description: Prior-year loss run summarized by line and cause
+- name: Underwriting Decisions
+  description: Recorded underwriting decision. Authority stays with the insurer.
+- name: Subjectivities
+  description: Condition that must be cleared before bind
+- name: Clearances
+  description: Clearance of a submission against in-force business and the broker
+    of record
+- name: Referrals
+  description: Referral of a submission to a person with delegated authority
+- name: Underwriting Evidence
+  description: Evidence reference on a submission. The document bytes stay in document
+    management.
+- name: Sanctions Screens
+  description: Recorded sanctions screening result. The check itself stays with the
+    provider.
+- name: Submission Status History
+  description: Status change recorded against a submission
+- name: Submission Risks
+  description: Risk item on a submission
+- name: Submissions
+  description: Underwriting submission received for a product and applicant
+paths:
+  /api/v1/submissions/{submissionId}:
+    get:
+      tags:
+      - Submissions
+      summary: Get Submission by id
+      description: Retrieve one Submission
+      operationId: getSubmissionById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Submission found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionDTO"
+        "404":
+          description: Submission not found
+    put:
+      tags:
+      - Submissions
+      summary: Update Submission
+      description: Update an existing Submission
+      operationId: updateSubmission
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmissionDTO"
+        required: true
+      responses:
+        "200":
+          description: Submission updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: Submission not found
+    delete:
+      tags:
+      - Submissions
+      summary: Delete Submission
+      description: Delete a Submission
+      operationId: deleteSubmission
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Submission deleted
+        "404":
+          description: Submission not found
+  /api/v1/submissions/{submissionId}/subjectivities/{subjectivityId}:
+    get:
+      tags:
+      - Subjectivities
+      summary: Get Subjectivity by id
+      description: Retrieve one Subjectivity
+      operationId: getSubjectivityById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: subjectivityId
+        in: path
+        description: Unique identifier of the Subjectivity
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Subjectivity found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubjectivityDTO"
+        "404":
+          description: Subjectivity not found
+    put:
+      tags:
+      - Subjectivities
+      summary: Update Subjectivity
+      description: Update an existing Subjectivity
+      operationId: updateSubjectivity
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: subjectivityId
+        in: path
+        description: Unique identifier of the Subjectivity
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubjectivityDTO"
+        required: true
+      responses:
+        "200":
+          description: Subjectivity updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubjectivityDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: Subjectivity not found
+    delete:
+      tags:
+      - Subjectivities
+      summary: Delete Subjectivity
+      description: Delete a Subjectivity
+      operationId: deleteSubjectivity
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: subjectivityId
+        in: path
+        description: Unique identifier of the Subjectivity
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Subjectivity deleted
+        "404":
+          description: Subjectivity not found
+  /api/v1/submissions/{submissionId}/status-history/{submissionStatusHistoryId}:
+    get:
+      tags:
+      - Submission Status History
+      summary: Get SubmissionStatusHistory by id
+      description: Retrieve one SubmissionStatusHistory
+      operationId: getSubmissionStatusHistoryById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: submissionStatusHistoryId
+        in: path
+        description: Unique identifier of the SubmissionStatusHistory
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: SubmissionStatusHistory found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        "404":
+          description: SubmissionStatusHistory not found
+    put:
+      tags:
+      - Submission Status History
+      summary: Update SubmissionStatusHistory
+      description: Update an existing SubmissionStatusHistory
+      operationId: updateSubmissionStatusHistory
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: submissionStatusHistoryId
+        in: path
+        description: Unique identifier of the SubmissionStatusHistory
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        required: true
+      responses:
+        "200":
+          description: SubmissionStatusHistory updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: SubmissionStatusHistory not found
+    delete:
+      tags:
+      - Submission Status History
+      summary: Delete SubmissionStatusHistory
+      description: Delete a SubmissionStatusHistory
+      operationId: deleteSubmissionStatusHistory
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: submissionStatusHistoryId
+        in: path
+        description: Unique identifier of the SubmissionStatusHistory
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: SubmissionStatusHistory deleted
+        "404":
+          description: SubmissionStatusHistory not found
+  /api/v1/submissions/{submissionId}/statements-of-value/{statementOfValueId}:
+    get:
+      tags:
+      - Statements of Value
+      summary: Get StatementOfValue by id
+      description: Retrieve one StatementOfValue
+      operationId: getStatementOfValueById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: statementOfValueId
+        in: path
+        description: Unique identifier of the StatementOfValue
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: StatementOfValue found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StatementOfValueDTO"
+        "404":
+          description: StatementOfValue not found
+    put:
+      tags:
+      - Statements of Value
+      summary: Update StatementOfValue
+      description: Update an existing StatementOfValue
+      operationId: updateStatementOfValue
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: statementOfValueId
+        in: path
+        description: Unique identifier of the StatementOfValue
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatementOfValueDTO"
+        required: true
+      responses:
+        "200":
+          description: StatementOfValue updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StatementOfValueDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: StatementOfValue not found
+    delete:
+      tags:
+      - Statements of Value
+      summary: Delete StatementOfValue
+      description: Delete a StatementOfValue
+      operationId: deleteStatementOfValue
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: statementOfValueId
+        in: path
+        description: Unique identifier of the StatementOfValue
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: StatementOfValue deleted
+        "404":
+          description: StatementOfValue not found
+  /api/v1/submissions/{submissionId}/sanctions-screens/{sanctionsScreenId}:
+    get:
+      tags:
+      - Sanctions Screens
+      summary: Get SanctionsScreen by id
+      description: Retrieve one SanctionsScreen
+      operationId: getSanctionsScreenById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: sanctionsScreenId
+        in: path
+        description: Unique identifier of the SanctionsScreen
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: SanctionsScreen found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SanctionsScreenDTO"
+        "404":
+          description: SanctionsScreen not found
+    put:
+      tags:
+      - Sanctions Screens
+      summary: Update SanctionsScreen
+      description: Update an existing SanctionsScreen
+      operationId: updateSanctionsScreen
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: sanctionsScreenId
+        in: path
+        description: Unique identifier of the SanctionsScreen
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SanctionsScreenDTO"
+        required: true
+      responses:
+        "200":
+          description: SanctionsScreen updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SanctionsScreenDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: SanctionsScreen not found
+    delete:
+      tags:
+      - Sanctions Screens
+      summary: Delete SanctionsScreen
+      description: Delete a SanctionsScreen
+      operationId: deleteSanctionsScreen
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: sanctionsScreenId
+        in: path
+        description: Unique identifier of the SanctionsScreen
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: SanctionsScreen deleted
+        "404":
+          description: SanctionsScreen not found
+  /api/v1/submissions/{submissionId}/risks/{submissionRiskId}:
+    get:
+      tags:
+      - Submission Risks
+      summary: Get SubmissionRisk by id
+      description: Retrieve one SubmissionRisk
+      operationId: getSubmissionRiskById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: submissionRiskId
+        in: path
+        description: Unique identifier of the SubmissionRisk
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: SubmissionRisk found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionRiskDTO"
+        "404":
+          description: SubmissionRisk not found
+    put:
+      tags:
+      - Submission Risks
+      summary: Update SubmissionRisk
+      description: Update an existing SubmissionRisk
+      operationId: updateSubmissionRisk
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: submissionRiskId
+        in: path
+        description: Unique identifier of the SubmissionRisk
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmissionRiskDTO"
+        required: true
+      responses:
+        "200":
+          description: SubmissionRisk updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionRiskDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: SubmissionRisk not found
+    delete:
+      tags:
+      - Submission Risks
+      summary: Delete SubmissionRisk
+      description: Delete a SubmissionRisk
+      operationId: deleteSubmissionRisk
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: submissionRiskId
+        in: path
+        description: Unique identifier of the SubmissionRisk
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: SubmissionRisk deleted
+        "404":
+          description: SubmissionRisk not found
+  /api/v1/submissions/{submissionId}/referrals/{referralId}:
+    get:
+      tags:
+      - Referrals
+      summary: Get Referral by id
+      description: Retrieve one Referral
+      operationId: getReferralById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: referralId
+        in: path
+        description: Unique identifier of the Referral
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Referral found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReferralDTO"
+        "404":
+          description: Referral not found
+    put:
+      tags:
+      - Referrals
+      summary: Update Referral
+      description: Update an existing Referral
+      operationId: updateReferral
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: referralId
+        in: path
+        description: Unique identifier of the Referral
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferralDTO"
+        required: true
+      responses:
+        "200":
+          description: Referral updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReferralDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: Referral not found
+    delete:
+      tags:
+      - Referrals
+      summary: Delete Referral
+      description: Delete a Referral
+      operationId: deleteReferral
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: referralId
+        in: path
+        description: Unique identifier of the Referral
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Referral deleted
+        "404":
+          description: Referral not found
+  /api/v1/submissions/{submissionId}/quotes/{quoteId}:
+    get:
+      tags:
+      - Quotes
+      summary: Get Quote by id
+      description: Retrieve one Quote
+      operationId: getQuoteById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: quoteId
+        in: path
+        description: Unique identifier of the Quote
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Quote found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/QuoteDTO"
+        "404":
+          description: Quote not found
+    put:
+      tags:
+      - Quotes
+      summary: Update Quote
+      description: Update an existing Quote
+      operationId: updateQuote
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: quoteId
+        in: path
+        description: Unique identifier of the Quote
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteDTO"
+        required: true
+      responses:
+        "200":
+          description: Quote updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/QuoteDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: Quote not found
+    delete:
+      tags:
+      - Quotes
+      summary: Delete Quote
+      description: Delete a Quote
+      operationId: deleteQuote
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: quoteId
+        in: path
+        description: Unique identifier of the Quote
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Quote deleted
+        "404":
+          description: Quote not found
+  /api/v1/submissions/{submissionId}/loss-runs/{lossRunId}:
+    get:
+      tags:
+      - Loss Runs
+      summary: Get LossRun by id
+      description: Retrieve one LossRun
+      operationId: getLossRunById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: lossRunId
+        in: path
+        description: Unique identifier of the LossRun
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: LossRun found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LossRunDTO"
+        "404":
+          description: LossRun not found
+    put:
+      tags:
+      - Loss Runs
+      summary: Update LossRun
+      description: Update an existing LossRun
+      operationId: updateLossRun
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: lossRunId
+        in: path
+        description: Unique identifier of the LossRun
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LossRunDTO"
+        required: true
+      responses:
+        "200":
+          description: LossRun updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LossRunDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: LossRun not found
+    delete:
+      tags:
+      - Loss Runs
+      summary: Delete LossRun
+      description: Delete a LossRun
+      operationId: deleteLossRun
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: lossRunId
+        in: path
+        description: Unique identifier of the LossRun
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: LossRun deleted
+        "404":
+          description: LossRun not found
+  /api/v1/submissions/{submissionId}/evidence/{underwritingEvidenceId}:
+    get:
+      tags:
+      - Underwriting Evidence
+      summary: Get UnderwritingEvidence by id
+      description: Retrieve one UnderwritingEvidence
+      operationId: getUnderwritingEvidenceById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: underwritingEvidenceId
+        in: path
+        description: Unique identifier of the UnderwritingEvidence
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: UnderwritingEvidence found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        "404":
+          description: UnderwritingEvidence not found
+    put:
+      tags:
+      - Underwriting Evidence
+      summary: Update UnderwritingEvidence
+      description: Update an existing UnderwritingEvidence
+      operationId: updateUnderwritingEvidence
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: underwritingEvidenceId
+        in: path
+        description: Unique identifier of the UnderwritingEvidence
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        required: true
+      responses:
+        "200":
+          description: UnderwritingEvidence updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: UnderwritingEvidence not found
+    delete:
+      tags:
+      - Underwriting Evidence
+      summary: Delete UnderwritingEvidence
+      description: Delete a UnderwritingEvidence
+      operationId: deleteUnderwritingEvidence
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: underwritingEvidenceId
+        in: path
+        description: Unique identifier of the UnderwritingEvidence
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: UnderwritingEvidence deleted
+        "404":
+          description: UnderwritingEvidence not found
+  /api/v1/submissions/{submissionId}/decisions/{underwritingDecisionId}:
+    get:
+      tags:
+      - Underwriting Decisions
+      summary: Get UnderwritingDecision by id
+      description: Retrieve one UnderwritingDecision
+      operationId: getUnderwritingDecisionById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: underwritingDecisionId
+        in: path
+        description: Unique identifier of the UnderwritingDecision
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: UnderwritingDecision found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        "404":
+          description: UnderwritingDecision not found
+    put:
+      tags:
+      - Underwriting Decisions
+      summary: Update UnderwritingDecision
+      description: Update an existing UnderwritingDecision
+      operationId: updateUnderwritingDecision
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: underwritingDecisionId
+        in: path
+        description: Unique identifier of the UnderwritingDecision
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        required: true
+      responses:
+        "200":
+          description: UnderwritingDecision updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: UnderwritingDecision not found
+    delete:
+      tags:
+      - Underwriting Decisions
+      summary: Delete UnderwritingDecision
+      description: Delete a UnderwritingDecision
+      operationId: deleteUnderwritingDecision
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: underwritingDecisionId
+        in: path
+        description: Unique identifier of the UnderwritingDecision
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: UnderwritingDecision deleted
+        "404":
+          description: UnderwritingDecision not found
+  /api/v1/submissions/{submissionId}/clearances/{clearanceId}:
+    get:
+      tags:
+      - Clearances
+      summary: Get Clearance by id
+      description: Retrieve one Clearance
+      operationId: getClearanceById
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: clearanceId
+        in: path
+        description: Unique identifier of the Clearance
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Clearance found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ClearanceDTO"
+        "404":
+          description: Clearance not found
+    put:
+      tags:
+      - Clearances
+      summary: Update Clearance
+      description: Update an existing Clearance
+      operationId: updateClearance
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: clearanceId
+        in: path
+        description: Unique identifier of the Clearance
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClearanceDTO"
+        required: true
+      responses:
+        "200":
+          description: Clearance updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ClearanceDTO"
+        "400":
+          description: Invalid data
+        "404":
+          description: Clearance not found
+    delete:
+      tags:
+      - Clearances
+      summary: Delete Clearance
+      description: Delete a Clearance
+      operationId: deleteClearance
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: clearanceId
+        in: path
+        description: Unique identifier of the Clearance
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Clearance deleted
+        "404":
+          description: Clearance not found
+  /api/v1/submissions:
+    post:
+      tags:
+      - Submissions
+      summary: Create Submission
+      description: Create a Submission
+      operationId: createSubmission
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmissionDTO"
+        required: true
+      responses:
+        "201":
+          description: Submission created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/subjectivities:
+    post:
+      tags:
+      - Subjectivities
+      summary: Create Subjectivity
+      description: Create a Subjectivity
+      operationId: createSubjectivity
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubjectivityDTO"
+        required: true
+      responses:
+        "201":
+          description: Subjectivity created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubjectivityDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/subjectivities/filter:
+    post:
+      tags:
+      - Subjectivities
+      summary: Filter subjectivities
+      description: Retrieve a page of subjectivities matching the filter
+      operationId: filterSubjectivities
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestSubjectivityDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseSubjectivityDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/status-history:
+    post:
+      tags:
+      - Submission Status History
+      summary: Create SubmissionStatusHistory
+      description: Create a SubmissionStatusHistory
+      operationId: createSubmissionStatusHistory
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        required: true
+      responses:
+        "201":
+          description: SubmissionStatusHistory created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/status-history/filter:
+    post:
+      tags:
+      - Submission Status History
+      summary: Filter submissionStatusHistories
+      description: Retrieve a page of submissionStatusHistories matching the filter
+      operationId: filterSubmissionStatusHistories
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestSubmissionStatusHistoryDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseSubmissionStatusHistoryDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/statements-of-value:
+    post:
+      tags:
+      - Statements of Value
+      summary: Create StatementOfValue
+      description: Create a StatementOfValue
+      operationId: createStatementOfValue
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatementOfValueDTO"
+        required: true
+      responses:
+        "201":
+          description: StatementOfValue created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StatementOfValueDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/statements-of-value/filter:
+    post:
+      tags:
+      - Statements of Value
+      summary: Filter statementsOfValue
+      description: Retrieve a page of statementsOfValue matching the filter
+      operationId: filterStatementsOfValue
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestStatementOfValueDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseStatementOfValueDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/sanctions-screens:
+    post:
+      tags:
+      - Sanctions Screens
+      summary: Create SanctionsScreen
+      description: Create a SanctionsScreen
+      operationId: createSanctionsScreen
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SanctionsScreenDTO"
+        required: true
+      responses:
+        "201":
+          description: SanctionsScreen created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SanctionsScreenDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/sanctions-screens/filter:
+    post:
+      tags:
+      - Sanctions Screens
+      summary: Filter sanctionsScreens
+      description: Retrieve a page of sanctionsScreens matching the filter
+      operationId: filterSanctionsScreens
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestSanctionsScreenDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseSanctionsScreenDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/risks:
+    post:
+      tags:
+      - Submission Risks
+      summary: Create SubmissionRisk
+      description: Create a SubmissionRisk
+      operationId: createSubmissionRisk
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmissionRiskDTO"
+        required: true
+      responses:
+        "201":
+          description: SubmissionRisk created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SubmissionRiskDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/risks/filter:
+    post:
+      tags:
+      - Submission Risks
+      summary: Filter submissionRisks
+      description: Retrieve a page of submissionRisks matching the filter
+      operationId: filterSubmissionRisks
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestSubmissionRiskDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseSubmissionRiskDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/referrals:
+    post:
+      tags:
+      - Referrals
+      summary: Create Referral
+      description: Create a Referral
+      operationId: createReferral
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReferralDTO"
+        required: true
+      responses:
+        "201":
+          description: Referral created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReferralDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/referrals/filter:
+    post:
+      tags:
+      - Referrals
+      summary: Filter referrals
+      description: Retrieve a page of referrals matching the filter
+      operationId: filterReferrals
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestReferralDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseReferralDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/quotes:
+    post:
+      tags:
+      - Quotes
+      summary: Create Quote
+      description: Create a Quote
+      operationId: createQuote
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteDTO"
+        required: true
+      responses:
+        "201":
+          description: Quote created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/QuoteDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/quotes/filter:
+    post:
+      tags:
+      - Quotes
+      summary: Filter quotes
+      description: Retrieve a page of quotes matching the filter
+      operationId: filterQuotes
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestQuoteDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseQuoteDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/loss-runs:
+    post:
+      tags:
+      - Loss Runs
+      summary: Create LossRun
+      description: Create a LossRun
+      operationId: createLossRun
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LossRunDTO"
+        required: true
+      responses:
+        "201":
+          description: LossRun created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LossRunDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/loss-runs/filter:
+    post:
+      tags:
+      - Loss Runs
+      summary: Filter lossRuns
+      description: Retrieve a page of lossRuns matching the filter
+      operationId: filterLossRuns
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestLossRunDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseLossRunDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/evidence:
+    post:
+      tags:
+      - Underwriting Evidence
+      summary: Create UnderwritingEvidence
+      description: Create a UnderwritingEvidence
+      operationId: createUnderwritingEvidence
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        required: true
+      responses:
+        "201":
+          description: UnderwritingEvidence created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/evidence/filter:
+    post:
+      tags:
+      - Underwriting Evidence
+      summary: Filter underwritingEvidenceItems
+      description: Retrieve a page of underwritingEvidenceItems matching the filter
+      operationId: filterUnderwritingEvidenceItems
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestUnderwritingEvidenceDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseUnderwritingEvidenceDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/decisions:
+    post:
+      tags:
+      - Underwriting Decisions
+      summary: Create UnderwritingDecision
+      description: Create a UnderwritingDecision
+      operationId: createUnderwritingDecision
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        required: true
+      responses:
+        "201":
+          description: UnderwritingDecision created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/decisions/filter:
+    post:
+      tags:
+      - Underwriting Decisions
+      summary: Filter underwritingDecisions
+      description: Retrieve a page of underwritingDecisions matching the filter
+      operationId: filterUnderwritingDecisions
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestUnderwritingDecisionDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseUnderwritingDecisionDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/{submissionId}/clearances:
+    post:
+      tags:
+      - Clearances
+      summary: Create Clearance
+      description: Create a Clearance
+      operationId: createClearance
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClearanceDTO"
+        required: true
+      responses:
+        "201":
+          description: Clearance created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ClearanceDTO"
+        "400":
+          description: Invalid data
+  /api/v1/submissions/{submissionId}/clearances/filter:
+    post:
+      tags:
+      - Clearances
+      summary: Filter clearances
+      description: Retrieve a page of clearances matching the filter
+      operationId: filterClearances
+      parameters:
+      - name: submissionId
+        in: path
+        description: Unique identifier of the Submission
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestClearanceDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseClearanceDTO"
+        "400":
+          description: Invalid filter request
+  /api/v1/submissions/filter:
+    post:
+      tags:
+      - Submissions
+      summary: Filter submissions
+      description: Retrieve a page of submissions matching the filter
+      operationId: filterSubmissions
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestSubmissionDTO"
+        required: true
+      responses:
+        "200":
+          description: Page of matching records
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseSubmissionDTO"
+        "400":
+          description: Invalid filter request
+components:
+  schemas:
+    SubmissionDTO:
+      required:
+      - lineOfBusiness
+      - partyId
+      - productId
+      - receivedAt
+      - submissionNumber
+      - submissionStatus
+      - tenantId
+      type: object
+      properties:
+        submissionId:
+          type: string
+          format: uuid
+          readOnly: true
+        tenantId:
+          type: string
+          format: uuid
+        submissionNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+        partyId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        distributorId:
+          type: string
+          format: uuid
+        contractId:
+          type: string
+          format: uuid
+        submissionStatus:
+          type: string
+          enum:
+          - RECEIVED
+          - IN_CLEARANCE
+          - REFERRED
+          - QUOTED
+          - BOUND
+          - DECLINED
+          - WITHDRAWN
+        lineOfBusiness:
+          type: string
+          enum:
+          - MOTOR
+          - PROPERTY
+          - LIABILITY
+          - LIFE
+          - HEALTH
+          - MARINE
+          - AVIATION
+          - ACCIDENT
+          - OTHER
+        receivedAt:
+          type: string
+          format: date-time
+        currency:
+          pattern: "[A-Z]{3}"
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SubjectivityDTO:
+      required:
+      - description
+      - quoteId
+      - subjectivityStatus
+      - submissionId
+      type: object
+      properties:
+        subjectivityId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        quoteId:
+          type: string
+          format: uuid
+        description:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        subjectivityStatus:
+          type: string
+          enum:
+          - OPEN
+          - SATISFIED
+          - WAIVED
+        dueDate:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SubmissionStatusHistoryDTO:
+      required:
+      - changedAt
+      - submissionId
+      - submissionStatus
+      type: object
+      properties:
+        submissionStatusHistoryId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        submissionStatus:
+          type: string
+          enum:
+          - RECEIVED
+          - IN_CLEARANCE
+          - REFERRED
+          - QUOTED
+          - BOUND
+          - DECLINED
+          - WITHDRAWN
+        statusReason:
+          maxLength: 500
+          minLength: 0
+          type: string
+        changedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    StatementOfValueDTO:
+      required:
+      - lineNumber
+      - submissionId
+      type: object
+      properties:
+        statementOfValueId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        lineNumber:
+          type: integer
+          format: int32
+        locationReference:
+          maxLength: 128
+          minLength: 0
+          type: string
+        occupancy:
+          maxLength: 128
+          minLength: 0
+          type: string
+        declaredValue:
+          type: number
+        currency:
+          pattern: "[A-Z]{3}"
+          type: string
+        sourceReference:
+          maxLength: 128
+          minLength: 0
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SanctionsScreenDTO:
+      required:
+      - partyId
+      - screeningStatus
+      - submissionId
+      type: object
+      properties:
+        sanctionsScreenId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        screeningStatus:
+          type: string
+          enum:
+          - CLEAR
+          - POTENTIAL_MATCH
+          - CONFIRMED_MATCH
+          - NOT_SCREENED
+        providerReference:
+          maxLength: 128
+          minLength: 0
+          type: string
+        screenedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    SubmissionRiskDTO:
+      required:
+      - insuredObjectType
+      - riskNumber
+      - submissionId
+      type: object
+      properties:
+        submissionRiskId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        riskNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+        description:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        insuredObjectType:
+          type: string
+          enum:
+          - PERSON
+          - VEHICLE
+          - PROPERTY
+          - VESSEL
+          - AIRCRAFT
+          - LIABILITY
+          - OTHER
+        partyId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ReferralDTO:
+      required:
+      - reason
+      - referralStatus
+      - referredAt
+      - submissionId
+      type: object
+      properties:
+        referralId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        reason:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        authorityLevel:
+          maxLength: 100
+          minLength: 0
+          type: string
+        referralStatus:
+          type: string
+          enum:
+          - OPEN
+          - RETURNED
+          - APPROVED
+          - DECLINED
+        referredAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    QuoteDTO:
+      required:
+      - quoteNumber
+      - quoteStatus
+      - submissionId
+      type: object
+      properties:
+        quoteId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        quoteNumber:
+          maxLength: 64
+          minLength: 0
+          type: string
+        quoteStatus:
+          type: string
+          enum:
+          - DRAFT
+          - PRESENTED
+          - ACCEPTED
+          - EXPIRED
+          - DECLINED
+        premiumAmount:
+          type: number
+        currency:
+          pattern: "[A-Z]{3}"
+          type: string
+        validUntil:
+          type: string
+          format: date
+        boundPolicyId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LossRunDTO:
+      required:
+      - lossYear
+      - submissionId
+      type: object
+      properties:
+        lossRunId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        priorCarrierName:
+          maxLength: 255
+          minLength: 0
+          type: string
+        lineOfBusiness:
+          type: string
+          enum:
+          - MOTOR
+          - PROPERTY
+          - LIABILITY
+          - LIFE
+          - HEALTH
+          - MARINE
+          - AVIATION
+          - ACCIDENT
+          - OTHER
+        lossYear:
+          type: integer
+          format: int32
+        causeCode:
+          maxLength: 64
+          minLength: 0
+          type: string
+        claimCount:
+          type: integer
+          format: int32
+        incurredAmount:
+          type: number
+        currency:
+          pattern: "[A-Z]{3}"
+          type: string
+        largeLoss:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UnderwritingEvidenceDTO:
+      required:
+      - documentId
+      - evidenceStatus
+      - evidenceType
+      - submissionId
+      type: object
+      properties:
+        underwritingEvidenceId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        documentId:
+          type: string
+          format: uuid
+        evidenceType:
+          type: string
+          enum:
+          - APPLICATION
+          - STATEMENT_OF_VALUES
+          - LOSS_RUN
+          - SURVEY
+          - FINANCIALS
+          - OTHER
+        evidenceStatus:
+          type: string
+          enum:
+          - REQUESTED
+          - RECEIVED
+          - ACCEPTED
+          - REJECTED
+        receivedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UnderwritingDecisionDTO:
+      required:
+      - decidedAt
+      - decisionOutcome
+      - submissionId
+      type: object
+      properties:
+        underwritingDecisionId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        decisionOutcome:
+          type: string
+          enum:
+          - ACCEPT
+          - ACCEPT_WITH_CONDITIONS
+          - DECLINE
+          - REFER
+        conditions:
+          maxLength: 4000
+          minLength: 0
+          type: string
+        decidedAt:
+          type: string
+          format: date-time
+        authorityReference:
+          maxLength: 200
+          minLength: 0
+          type: string
+        boundPolicyId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ClearanceDTO:
+      required:
+      - clearanceStatus
+      - submissionId
+      type: object
+      properties:
+        clearanceId:
+          type: string
+          format: uuid
+          readOnly: true
+        submissionId:
+          type: string
+          format: uuid
+        clearanceStatus:
+          type: string
+          enum:
+          - CLEARED
+          - CONFLICT
+          - PENDING
+        inForcePolicyId:
+          type: string
+          format: uuid
+        brokerOfRecordPartyId:
+          type: string
+          format: uuid
+        clearedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FilterOptions:
+      type: object
+      properties:
+        caseInsensitiveStrings:
+          type: boolean
+        includeInheritedFields:
+          type: boolean
+      description: Filter options for customizing filter behavior
+    FilterRequestSubjectivityDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/SubjectivityDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationRequest:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          description: The zero-based page number to retrieve.
+          format: int32
+          example: 0
+          default: 0
+        pageSize:
+          type: integer
+          description: The number of items per page.
+          format: int32
+          example: 10
+          default: 10
+        sortBy:
+          type: string
+          description: The field to sort the results by.
+          example: name
+        sortDirection:
+          type: string
+          description: "The direction of sorting, either ASC or DESC."
+          example: DESC
+          default: DESC
+      description: "Represents a pagination request for retrieving paginated results,\
+        \ including page number, size, sort field, and direction."
+    RangeFilter:
+      type: object
+      properties:
+        ranges:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/RangeObject"
+          description: Map of field names to their range criteria
+      description: Represents range filters for numeric fields
+    RangeObject:
+      type: object
+      properties:
+        from:
+          type: object
+          description: Start value of the range
+        to:
+          type: object
+          description: End value of the range
+      description: Represents a range with from and to values
+    PaginationResponseSubjectivityDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/SubjectivityDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestSubmissionStatusHistoryDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseSubmissionStatusHistoryDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/SubmissionStatusHistoryDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestStatementOfValueDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/StatementOfValueDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseStatementOfValueDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/StatementOfValueDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestSanctionsScreenDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/SanctionsScreenDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseSanctionsScreenDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/SanctionsScreenDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestSubmissionRiskDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/SubmissionRiskDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseSubmissionRiskDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/SubmissionRiskDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestReferralDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/ReferralDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseReferralDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/ReferralDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestQuoteDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/QuoteDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseQuoteDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/QuoteDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestLossRunDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/LossRunDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseLossRunDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/LossRunDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestUnderwritingEvidenceDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseUnderwritingEvidenceDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/UnderwritingEvidenceDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestUnderwritingDecisionDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseUnderwritingDecisionDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/UnderwritingDecisionDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestClearanceDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/ClearanceDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseClearanceDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/ClearanceDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
+    FilterRequestSubmissionDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/SubmissionDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+      description: Filter criteria
+    PaginationResponseSubmissionDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          description: The list of items for the current page.
+          items:
+            $ref: "#/components/schemas/SubmissionDTO"
+        totalElements:
+          type: integer
+          description: The total number of elements across all pages.
+          format: int64
+        totalPages:
+          type: integer
+          description: The total number of pages based on the data size and page size.
+          format: int32
+        currentPage:
+          type: integer
+          description: "The current page number, typically zero-based."
+          format: int32
+      description: Represents a paginated response containing a list of items and
+        pagination metadata.
