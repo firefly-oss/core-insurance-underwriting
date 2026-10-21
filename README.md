@@ -1,9 +1,9 @@
 <a href="https://fireflysoftware.io/openplatform/">
 <picture>
-  <source media="(max-width: 640px) and (prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-narrow-dark.svg">
-  <source media="(max-width: 640px)" srcset="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-narrow-light.svg">
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-dark.svg">
-  <img src="https://raw.githubusercontent.com/firefly-oss/.github/main/profile/assets/banner-light.svg" alt="Firefly OpenPlatform - Core Insurance - Underwriting" width="100%">
+  <source media="(max-width: 640px) and (prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/fireflysoftwaresolutions/.github/main/profile/assets/banner-narrow-dark.svg">
+  <source media="(max-width: 640px)" srcset="https://raw.githubusercontent.com/fireflysoftwaresolutions/.github/main/profile/assets/banner-narrow-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/fireflysoftwaresolutions/.github/main/profile/assets/banner-dark.svg">
+  <img src="https://raw.githubusercontent.com/fireflysoftwaresolutions/.github/main/profile/assets/banner-light.svg" alt="Firefly OpenPlatform - Core Insurance - Underwriting" width="100%">
 </picture>
 </a>
 
@@ -17,9 +17,11 @@ Core repository for underwriting submissions, evidence references, referrals, an
 
 Repository: [https://github.com/firefly-oss/core-insurance-underwriting](https://github.com/firefly-oss/core-insurance-underwriting)
 
-Stores the underwriting file. It does not rate a risk and it does not decide authority. The applicant is a party, the product is a catalogue id, and a bound decision may point at a policy id.
+Stores the underwriting file. It does not rate a risk and it does not decide authority. The applicant is a party, the product is a catalog id, and a bound decision may point at a policy id.
 
-This is a **core** service. It owns its tables and exposes a reactive CRUD API. It does not call other core services. Domain orchestration is intentionally not in this repository.
+This is a **core** service. It owns its tables and exposes a reactive API. It does not call other core services. Domain orchestration is intentionally not in this repository.
+
+A submission follows an explicit status lifecycle. `RECEIVED` may become `IN_CLEARANCE`, `DECLINED`, or `WITHDRAWN`. `IN_CLEARANCE` may become `REFERRED`, `QUOTED`, `DECLINED`, or `WITHDRAWN`. `REFERRED` may return to `IN_CLEARANCE` or become `QUOTED`, `DECLINED`, or `WITHDRAWN`. `QUOTED` may become `BOUND`, `DECLINED`, or `WITHDRAWN`. `BOUND`, `DECLINED`, and `WITHDRAWN` stay on file. Only a `RECEIVED` submission can be removed. A submission that has left intake stays on file.
 
 ## What it does not own
 
@@ -178,7 +180,7 @@ Fields that point at another Firefly service are logical references. Foreign key
 | POST | `/api/v1/submissions` | Create a Submission |
 | GET | `/api/v1/submissions/{submissionId}` | Get a Submission |
 | PUT | `/api/v1/submissions/{submissionId}` | Update a Submission |
-| DELETE | `/api/v1/submissions/{submissionId}` | Delete a Submission |
+| DELETE | `/api/v1/submissions/{submissionId}` | Delete a submission still at intake |
 | POST | `/api/v1/submissions/{submissionId}/risks/filter` | Filter submissionrisks |
 | POST | `/api/v1/submissions/{submissionId}/risks` | Create a SubmissionRisk |
 | GET | `/api/v1/submissions/{submissionId}/risks/{submissionRiskId}` | Get a SubmissionRisk |
