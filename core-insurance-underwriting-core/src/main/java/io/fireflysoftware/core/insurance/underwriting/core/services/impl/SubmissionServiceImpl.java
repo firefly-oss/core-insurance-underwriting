@@ -24,6 +24,7 @@ import org.fireflyframework.web.error.exceptions.ResourceNotFoundException;
 import io.fireflysoftware.core.insurance.underwriting.core.mappers.SubmissionMapper;
 import io.fireflysoftware.core.insurance.underwriting.core.services.SubmissionService;
 import io.fireflysoftware.core.insurance.underwriting.interfaces.dtos.SubmissionDTO;
+import io.fireflysoftware.core.insurance.underwriting.interfaces.enums.SubmissionStatus;
 import io.fireflysoftware.core.insurance.underwriting.models.entities.Submission;
 import io.fireflysoftware.core.insurance.underwriting.models.repositories.SubmissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class SubmissionServiceImpl implements SubmissionService {
     public Mono<SubmissionDTO> createSubmission(SubmissionDTO dto) {
         return Mono.just(dto)
                 .map(mapper::toEntity)
+                .doOnNext(entity -> {
+                    if (entity.getSubmissionStatus() == null) {
+                        entity.setSubmissionStatus(SubmissionStatus.RECEIVED);
+                    }
+                })
                 .flatMap(repository::save)
                 .map(mapper::toDTO);
     }
@@ -61,8 +67,19 @@ public class SubmissionServiceImpl implements SubmissionService {
         return repository.findById(submissionId)
                 .switchIfEmpty(Mono.error(ResourceNotFoundException.forResource("Submission", submissionId.toString())))
                 .flatMap(existing -> {
+                    SubmissionStatus current = existing.getSubmissionStatus() != null
+                            ? existing.getSubmissionStatus()
+                            : SubmissionStatus.RECEIVED;
                     mapper.updateEntityFromDto(dto, existing);
                     existing.setSubmissionId(submissionId);
+                    SubmissionStatus next = existing.getSubmissionStatus() != null
+                            ? existing.getSubmissionStatus()
+                            : current;
+                    if (!SubmissionLifecycle.canTransition(current, next)) {
+                        return Mono.error(new IllegalStateException(
+                                "Submission " + submissionId + " cannot move from " + current + " to " + next));
+                    }
+                    existing.setSubmissionStatus(next);
                     return repository.save(existing);
                 })
                 .map(mapper::toDTO);
@@ -72,7 +89,17 @@ public class SubmissionServiceImpl implements SubmissionService {
     public Mono<Void> deleteSubmission(UUID submissionId) {
         return repository.findById(submissionId)
                 .switchIfEmpty(Mono.error(ResourceNotFoundException.forResource("Submission", submissionId.toString())))
-                .flatMap(existing -> repository.deleteById(submissionId));
+                .flatMap(existing -> {
+                    SubmissionStatus status = existing.getSubmissionStatus() != null
+                            ? existing.getSubmissionStatus()
+                            : SubmissionStatus.RECEIVED;
+                    if (status != SubmissionStatus.RECEIVED) {
+                        return Mono.error(new IllegalStateException(
+                                "Submission " + submissionId + " is " + status
+                                        + " and cannot be deleted; withdraw it so the submission history is kept"));
+                    }
+                    return repository.deleteById(submissionId);
+                });
     }
 
     @Override
